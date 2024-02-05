@@ -7,6 +7,12 @@ using static UnityEditor.PlayerSettings;
 
 namespace Game
 {
+    public class Privote
+    {
+        public int id;
+        public GameObject privote;
+        public Vector3 position;
+    }
     public class LevelEditor : MonoBehaviour
     {
         [SerializeField] private Transform map;
@@ -16,11 +22,13 @@ namespace Game
         [Space(2f)]
         [Header("PRIVOTE")]
         [SerializeField] private GameObject prefabPrivoteWall;
+        [SerializeField] private GameObject prefabPrivoteBrick;
         [SerializeField] private Vector3 minLimit;
         [SerializeField] private Vector3 maxLimit;
 
-        float widthBridge = 0.0f;
-        float widthPrivote = 0.0f;
+        private List<Privote> lstPrivote = new();
+        private float widthBridge = 0.0f;
+        private float widthPrivote = 0.0f;
         void Start()
         {
 
@@ -58,15 +66,37 @@ namespace Game
         [Button("Create Block")]
         public void CreateBlock()
         {
+            int id = 0;
             for (float x = minLimit.x; x < maxLimit.x; x += widthPrivote)
             {
                 for (float z = minLimit.z; z < maxLimit.z; z += widthPrivote)
                 {
                     Vector3 pos = new Vector3(x, 0, z);
-                    GameObject bridge = GameObject.Instantiate(prefabPrivoteWall, pos, Quaternion.identity);
-                    bridge.transform.SetParent(map);
+                    GameObject privoteWall = SimplePool.Spawn(prefabPrivoteWall, pos, Quaternion.identity);
+                    privoteWall.transform.SetParent(map);
+                    Privote privote = new Privote();
+                    privote.privote = privoteWall;
+                    privote.position = pos;
+                    privote.id = id;
+                    lstPrivote.Add(privote);
+                    id++;
                 }    
-            }    
+            }
+        }
+        [Button("Line Brick")]
+        
+        public void LineBrick()
+        {
+            List<int> tempPrivote = new();
+            foreach(Privote privote in lstPrivote)
+            {
+                if (privote.position.z == minLimit.z)
+                    tempPrivote.Add(privote.id);
+            }
+            int rand = tempPrivote[Random.Range(0, tempPrivote.Count)];
+            GameObject privoteBrick = SimplePool.Spawn(prefabPrivoteBrick, lstPrivote[rand].position, Quaternion.identity);
+            privoteBrick.transform.SetParent(map);
+            SimplePool.Despawn(lstPrivote[rand].privote);
         }    
     }
 }

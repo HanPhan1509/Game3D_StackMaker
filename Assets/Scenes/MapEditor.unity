@@ -156,6 +156,7 @@ MonoBehaviour:
   prefabBridge: {fileID: 1070504870967473788, guid: 65585d724fa396c4c9c29669dcc156f9, type: 3}
   quantityBrick: 10
   prefabPrivoteWall: {fileID: 4498709886862295864, guid: dd5d0cc42aad4f34ea3bf46eb092b2ff, type: 3}
+  prefabPrivoteBrick: {fileID: 502601859737027903, guid: d39478978adc3f1449af7b4f7326c6bd, type: 3}
   minLimit: {x: -5, y: 0, z: -5}
   maxLimit: {x: 5, y: 0, z: 5}
 --- !u!4 &281282824
