@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 namespace Game
 {
@@ -11,16 +12,26 @@ namespace Game
         [SerializeField] private Transform map;
         [SerializeField] private GameObject prefabBridge;
         [SerializeField] private int quantityBrick = 10;
+
+        [Space(2f)]
+        [Header("PRIVOTE")]
+        [SerializeField] private GameObject prefabPrivoteWall;
+        [SerializeField] private Vector3 minLimit;
+        [SerializeField] private Vector3 maxLimit;
+
+        float widthBridge = 0.0f;
+        float widthPrivote = 0.0f;
         void Start()
         {
 
         }
 
-        // Update is called once per frame
-        void Update()
+        [Button("Get value")]
+        public void GetValue()
         {
-
-        }
+            widthBridge = prefabBridge.GetComponent<MeshFilter>().sharedMesh.bounds.size.y;
+            widthPrivote = prefabPrivoteWall.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.y;
+        }    
 
         [Button("Clear Map")]
         public void ClearMap()
@@ -35,8 +46,6 @@ namespace Game
         public void CreateBrigde()
         {
             float pos = 0;
-            float widthBridge = 0;
-            widthBridge = prefabBridge.GetComponent<MeshFilter>().sharedMesh.bounds.size.y;
             //cube z dày
             for (int i = 0; i < quantityBrick; i++)
             {
@@ -44,6 +53,20 @@ namespace Game
                 bridge.transform.SetParent(map);
                 pos += widthBridge;
             }
+        }
+
+        [Button("Create Block")]
+        public void CreateBlock()
+        {
+            for (float x = minLimit.x; x < maxLimit.x; x += widthPrivote)
+            {
+                for (float z = minLimit.z; z < maxLimit.z; z += widthPrivote)
+                {
+                    Vector3 pos = new Vector3(x, 0, z);
+                    GameObject bridge = GameObject.Instantiate(prefabPrivoteWall, pos, Quaternion.identity);
+                    bridge.transform.SetParent(map);
+                }    
+            }    
         }    
     }
 }
