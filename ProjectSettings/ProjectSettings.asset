@@ -718,11 +718,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: 2c9f6b8c-8113-4abc-9fa6-ad9dca78c99e
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Game3D_StackMaker
+  organizationId: hanphan1509
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
