@@ -159,8 +159,9 @@ MonoBehaviour:
   prefabPrivoteBrick: {fileID: 502601859737027903, guid: d39478978adc3f1449af7b4f7326c6bd, type: 3}
   minLimit: {x: -5, y: 0, z: -5}
   maxLimit: {x: 5, y: 0, z: 5}
+  minQuantityPrivote: 10
+  maxQuantityPrivote: 20
   lstBrickBody: []
-  quantity: 20
 --- !u!4 &281282824
 Transform:
   m_ObjectHideFlags: 0
