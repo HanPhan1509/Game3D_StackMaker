@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4485150297539268929}
   m_Layer: 0
   m_Name: di
-  m_TagString: Untagged
+  m_TagString: Privote Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,9 +94,10 @@ GameObject:
   - component: {fileID: 4502774224412937573}
   - component: {fileID: 4474498936713476547}
   - component: {fileID: 4484656509104938726}
+  - component: {fileID: 7058848811191177276}
   m_Layer: 0
   m_Name: zhangaikuai
-  m_TagString: Untagged
+  m_TagString: Privote Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +167,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7058848811191177276
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4498680913596485689}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000002, z: 0.04877422}
+  m_Center: {x: 0, y: 0, z: -0.02438711}
 --- !u!1 &4498709886862295864
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +191,7 @@ GameObject:
   - component: {fileID: 755361251460325918}
   m_Layer: 5
   m_Name: Pivote_Wall
-  m_TagString: Untagged
+  m_TagString: Privote Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

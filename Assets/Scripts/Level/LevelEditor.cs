@@ -2,6 +2,7 @@ using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 namespace Game
@@ -30,15 +31,15 @@ namespace Game
         [Space(2f)]
         [Header("LIST")]
         [SerializeField] private List<Vector3> lstBrickBody = new();
-
-        private List<Privote> lstPrivote = new();
+        [SerializeField] private List<Privote> lstPrivoteDespawn = new();
+        [SerializeField] private List<Privote> lstPrivote = new();
         private float widthBridge = 0.0f;
         private float widthPrivote = 0.0f;
 
         [Button("Get value")]
         public void GetValue()
         {
-            SimplePool.Preload(prefabPrivoteWall, 100);
+            SimplePool.Preload(prefabPrivoteWall, 200);
             widthBridge = prefabBridge.GetComponent<MeshFilter>().sharedMesh.bounds.size.y;
             widthPrivote = prefabPrivoteWall.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.y;
             minQuantityPrivote = Math.Abs(maxLimit.x - minLimit.x);
@@ -50,6 +51,7 @@ namespace Game
         {
             lstPrivote.Clear();
             lstBrickBody.Clear();
+            lstPrivoteDespawn.Clear();
             for (int i = map.childCount - 1; i >= 0; i--)
             {
                 //SimplePool.Despawn(map.GetChild(i).gameObject);
@@ -105,7 +107,8 @@ namespace Game
             }
 
             int randStart = lstStartPrivote[Random.Range(0, lstStartPrivote.Count)];
-            SpawnBrick(lstPrivote[randStart].position, lstPrivote[randStart].privote);
+            SimplePool.Despawn(lstPrivote[randStart].privote);
+            SpawnBrick(lstPrivote[randStart].position);
 
             do
             {
@@ -124,6 +127,7 @@ namespace Game
                     count = check.Item2;
                     if (isSpawn)
                     {
+                        lstPrivoteDespawn.Add(lstPrivote.Find(x => x.position == nextPos));
                         lstBrickBody.Add(nextPos);
                         beforePos = currentPos;
                         currentPos = nextPos;
@@ -138,9 +142,14 @@ namespace Game
                     lstBrickBody.RemoveAt(indexDuplicate);
             } while (lstBrickBody.Count > maxQuantityPrivote || lstBrickBody.Count < minQuantityPrivote);
 
+            //foreach(Privote item in lstPrivoteDespawn)
+            //{
+            //    SimplePool.Despawn(lstPrivote.Find(x => x == item).privote);
+            //}    
+
             foreach (Vector3 posSpawn in lstBrickBody)
             {
-                SpawnBrick(posSpawn, lstPrivote[randStart].privote);
+                SpawnBrick(posSpawn);
             }
         }
 
@@ -163,11 +172,10 @@ namespace Game
             return (true, count);
         }
 
-        public void SpawnBrick(Vector3 position, GameObject privoteDespawn)
+        public void SpawnBrick(Vector3 position)
         {
             GameObject privoteBrick = SimplePool.Spawn(prefabPrivoteBrick, position, Quaternion.identity);
             privoteBrick.transform.SetParent(map);
-            SimplePool.Despawn(privoteDespawn);
         }
 
         public Vector3 AutomationBrick(Vector3 beforePos, Vector3 currentPos)

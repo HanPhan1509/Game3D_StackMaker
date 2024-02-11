@@ -10,13 +10,10 @@ namespace Game
         [SerializeField] private Model model;
         [SerializeField] private View view;
         [SerializeField] private Player player;
-        [SerializeField] private GameObject prefBrick;
-        private StatePlayer statePlayer;
 
         private void Start()
         {
             Time.timeScale = 0.1f;
-            statePlayer = StatePlayer.Idle;
             player.Init(model.SpeedMoving);
         }
 
@@ -35,11 +32,6 @@ namespace Game
                 player.ChangeStatePlayer(StatePlayer.MoveRight);
             if (Input.GetKeyDown(KeyCode.A))
                 player.ChangeStatePlayer(StatePlayer.MoveLeft);
-        }
-
-        private void AddBrick(Vector3 posPlayer)
-        {
-            GameObject brick = SimplePool.Spawn(prefBrick, posPlayer, Quaternion.identity);
         }
     }
 }

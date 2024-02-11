@@ -1,20 +1,31 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float speed = 0.0f;
+    [SerializeField] private GameObject prefBrick;
+    [SerializeField] private Transform posBrick;
+    [SerializeField] private Stack<GameObject> stackBricks = new();
     private StatePlayer statePlayer;
-    private Vector3 posMoving;
-    private Vector3 current = Vector3.zero;
-    private Vector3 target = Vector3.zero;
+    private float speed       = 0.0f;
+    private float posYSpawn   = 0.0f;
+    private float heightBrick = 0.0f;
+    private Vector3 current    = Vector3.zero;
+    private Vector3 target     = Vector3.zero;
+    private Vector3 checkBrick = Vector3.zero;
 
+    private void Start()
+    {
+        checkBrick = Vector3.forward;
+        posYSpawn = this.transform.position.y;
+        heightBrick = prefBrick.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.y;
+    }
 
     private void FixedUpdate()
     {
-        CheckBrick();
+        CheckPrivote();
         Move(statePlayer);
+        CheckBrick();
     }
 
     public void Init(float speed)
@@ -25,65 +36,91 @@ public class Player : MonoBehaviour
     public void ChangeStatePlayer(StatePlayer statePlayer)
     {
         this.statePlayer = statePlayer;
+        switch (statePlayer)
+        {
+            case StatePlayer.MoveForward:
+                checkBrick = Vector3.forward;
+                break;
+            case StatePlayer.MoveBackward:
+                checkBrick = Vector3.back;
+                break;
+            case StatePlayer.MoveLeft:
+                checkBrick = Vector3.left;
+                break;
+            case StatePlayer.MoveRight:
+                checkBrick = Vector3.right;
+                break;
+        }
     }
 
     private void Move(StatePlayer statePlayer)
     {
+        Vector3 posMoving = Vector3.zero;
         switch (statePlayer)
         {
             case StatePlayer.Idle:
                 posMoving = Vector3.zero;
-                this.transform.position = Vector3.MoveTowards(this.transform.position, this.transform.position + posMoving, speed);
                 break;
             case StatePlayer.MoveForward:
                 posMoving = Vector3.forward;
-                current = this.transform.position;
-                target = this.transform.position + posMoving;
-                Moving(current, target);
                 break;
             case StatePlayer.MoveBackward:
                 posMoving = Vector3.back;
-                current = this.transform.position;
-                target = this.transform.position + posMoving;
-                Moving(current, target);
                 break;
             case StatePlayer.MoveLeft:
                 posMoving = Vector3.left;
-                current = this.transform.position;
-                target = this.transform.position + posMoving;
-                Moving(current, target);
                 break;
             case StatePlayer.MoveRight:
                 posMoving = Vector3.right;
-                current = this.transform.position;
-                target = this.transform.position + posMoving;
-                Moving(current, target);
                 break;
         }
+        
+        Moving(posMoving);
     }
 
-    public void Moving(Vector3 current, Vector3 target)
+    public void Moving(Vector3 posMoving)
     {
-        Debug.Log($"Hann null {current} >< {target} >< speed: {speed}");
+        checkBrick = posMoving;
+        current = this.transform.position;
+        target = this.transform.position + posMoving;
         this.transform.position = Vector3.MoveTowards(current, target, speed);
+    }
+
+    public void CheckPrivote()
+    {
+        RaycastHit hit;
+        Physics.Raycast(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity);
+        Debug.DrawRay(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), Color.black, Mathf.Infinity);
+        if (hit.collider == null || !hit.collider.name.Contains("Brick"))
+        {
+            statePlayer = StatePlayer.Idle;
+        }
     }
 
     public void CheckBrick()
     {
-        RaycastHit hit;
-        Physics.Raycast(this.transform.position + posMoving, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity);
-        Debug.DrawRay(this.transform.position + posMoving, transform.TransformDirection(Vector3.down), Color.black, Mathf.Infinity);
-        if (hit.collider != null)
+        RaycastHit brick;
+        Physics.Raycast(this.transform.position, transform.TransformDirection(Vector3.down), out brick, Mathf.Infinity);
+        Debug.DrawRay(this.transform.position, transform.TransformDirection(Vector3.down), Color.red, Mathf.Infinity);
+        if (brick.collider != null)
         {
-            //if (!hit.collider.name.Contains("Brick"))
-            //{
-            //    Debug.Log("Hann collider " + hit.collider.name);
-            //    statePlayer = StatePlayer.Idle;
-            //}
-        }
-        else
-        {
-            statePlayer = StatePlayer.Idle;
-        }
+            if(brick.collider.name == "Brick")
+            {
+                HideBrick(brick.collider.gameObject);
+            }    
+        }    
+    }    
+
+    public void HideBrick(GameObject brick)
+    {
+        DestroyImmediate(brick);
+    }    
+
+    public void AddBrick()
+    {
+        Vector3 posSpawn = new Vector3(this.transform.position.x, posYSpawn, this.transform.position.z);
+        GameObject brick = SimplePool.Spawn(prefBrick, posSpawn, Quaternion.identity);
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + heightBrick, this.transform.position.z);
+        stackBricks.Push(brick);
     }
 }
