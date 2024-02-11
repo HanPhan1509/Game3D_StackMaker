@@ -80,7 +80,6 @@ public class Player : MonoBehaviour
 
     public void Moving(Vector3 posMoving)
     {
-        checkBrick = posMoving;
         current = this.transform.position;
         target = this.transform.position + posMoving;
         this.transform.position = Vector3.MoveTowards(current, target, speed);
@@ -91,8 +90,11 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity);
         Debug.DrawRay(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), Color.black, Mathf.Infinity);
-        if (hit.collider == null || !hit.collider.name.Contains("Brick"))
+        Debug.Log(checkBrick);
+        if (hit.collider != null) Debug.Log(hit.collider.tag);
+        if (hit.collider == null || !hit.collider.tag.Contains("Brick"))
         {
+            if(hit.collider != null) Debug.Log(hit.collider.tag);
             statePlayer = StatePlayer.Idle;
         }
     }
@@ -101,7 +103,7 @@ public class Player : MonoBehaviour
     {
         RaycastHit brick;
         Physics.Raycast(this.transform.position, transform.TransformDirection(Vector3.down), out brick, Mathf.Infinity);
-        Debug.DrawRay(this.transform.position, transform.TransformDirection(Vector3.down), Color.red, Mathf.Infinity);
+        //Debug.DrawRay(this.transform.position, transform.TransformDirection(Vector3.down), Color.red, Mathf.Infinity);
         if (brick.collider != null)
         {
             if(brick.collider.name == "Brick")
