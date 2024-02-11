@@ -1,18 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Controller : MonoBehaviour
+namespace Game
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Controller : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private Model model;
+        [SerializeField] private View view;
+        [SerializeField] private Player player;
+        [SerializeField] private GameObject prefBrick;
+        private StatePlayer statePlayer;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Start()
+        {
+            Time.timeScale = 0.1f;
+            statePlayer = StatePlayer.Idle;
+            player.Init(model.SpeedMoving);
+        }
+
+        void Update()
+        {
+            ControlInput();
+        }
+
+        private void ControlInput()
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+                player.ChangeStatePlayer(StatePlayer.MoveForward);
+            if (Input.GetKeyDown(KeyCode.S))
+                player.ChangeStatePlayer(StatePlayer.MoveBackward);
+            if (Input.GetKeyDown(KeyCode.D))
+                player.ChangeStatePlayer(StatePlayer.MoveRight);
+            if (Input.GetKeyDown(KeyCode.A))
+                player.ChangeStatePlayer(StatePlayer.MoveLeft);
+        }
+
+        private void AddBrick(Vector3 posPlayer)
+        {
+            GameObject brick = SimplePool.Spawn(prefBrick, posPlayer, Quaternion.identity);
+        }
     }
 }

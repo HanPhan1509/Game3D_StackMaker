@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 481399593078891805}
   m_Layer: 0
   m_Name: di
-  m_TagString: Untagged
+  m_TagString: Privote Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4809612072315319798}
   m_Layer: 5
   m_Name: Pivote_Brick
-  m_TagString: Untagged
+  m_TagString: Privote Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,9 +127,10 @@ GameObject:
   - component: {fileID: 501052898078567625}
   - component: {fileID: 469122872814094611}
   - component: {fileID: 479914367599752084}
+  - component: {fileID: 4722155837285152958}
   m_Layer: 0
-  m_Name: dimian
-  m_TagString: Untagged
+  m_Name: Brick
+  m_TagString: Privote Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,3 +200,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4722155837285152958
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504228981538070714}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1.0000004, z: 0.29989845}
+  m_Center: {x: 0.0000060945777, y: -0.0000002920447, z: 0.14994933}
