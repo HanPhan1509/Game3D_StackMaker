@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public void ChangeStatePlayer(StatePlayer statePlayer)
     {
         this.statePlayer = statePlayer;
-    }    
+    }
 
     private void Move(StatePlayer statePlayer)
     {
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
             case StatePlayer.MoveForward:
                 posMoving = Vector3.forward;
                 current = this.transform.position;
-                target  = this.transform.position + posMoving;
+                target = this.transform.position + posMoving;
                 Moving(current, target);
                 break;
         }
@@ -53,23 +53,20 @@ public class Player : MonoBehaviour
     public void CheckBrick()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.forward, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+        bool isBrick = Physics.Raycast(this.transform.position + Vector3.forward, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity);
+        Debug.DrawRay(this.transform.position + Vector3.forward, transform.TransformDirection(Vector3.down), Color.black, Mathf.Infinity);
+        //Debug.Log($"HAN 1 {hit.collider.name}");
+        if (hit.collider != null)
         {
-            Debug.DrawRay(transform.position + Vector3.forward, transform.TransformDirection(Vector3.down), Color.black, Mathf.Infinity);
-            
-            if (hit.collider != null)
+            if (!hit.collider.name.Contains("Brick"))
             {
-                Debug.Log($"HAN 1.1 {hit.collider.name}");
-                if (!hit.collider.name.Contains("Brick"))
-                {
-                    Debug.Log("Hann collider " + hit.collider.name);
-                    statePlayer = StatePlayer.Idle;
-                }
-            } else
-            {
-                Debug.Log($"HAN 1.2 {hit.collider.name}");
+                Debug.Log("Hann collider " + hit.collider.name);
                 statePlayer = StatePlayer.Idle;
             }
+        }
+        else
+        {
+            statePlayer = StatePlayer.Idle;
         }
     }
 }
