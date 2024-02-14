@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
                 statePlayer = StatePlayer.Idle;
             if(hit.collider.tag == "Bridge")
             {
-                FillBrickOnBridge(hit.collider.transform);
+                FillBrickOnBridge(hit.collider.GetComponent<Bridge>());
             }    
         }
     }
@@ -136,11 +136,15 @@ public class Player : MonoBehaviour
         brick.transform.SetParent(posBrick);
     }
 
-    private void FillBrickOnBridge(Transform bridge)
+    private void FillBrickOnBridge(Bridge bridge)
     {
+        if (bridge.IsFill)
+            return;
+        Transform bridgeTransform = bridge.transform;
         GameObject brick = stackBricks.Peek();
-        brick.transform.SetParent(bridge);
-        brick.transform.position = bridge.position;
+        brick.transform.SetParent(bridgeTransform);
+        brick.transform.position = bridgeTransform.position;
+        bridge.IsFill = true;
         RemoveBrick();
     }    
 
