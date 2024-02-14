@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     {
         checkBrick = Vector3.forward;
         posYSpawn = this.transform.position.y;
-        heightBrick = prefBrick.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.y;
+        heightBrick = prefBrick.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.z;
     }
 
     private void FixedUpdate()
@@ -90,11 +90,8 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity);
         Debug.DrawRay(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), Color.black, Mathf.Infinity);
-        Debug.Log(checkBrick);
-        if (hit.collider != null) Debug.Log(hit.collider.tag);
         if (hit.collider == null || !hit.collider.tag.Contains("Brick"))
         {
-            if(hit.collider != null) Debug.Log(hit.collider.tag);
             statePlayer = StatePlayer.Idle;
         }
     }
@@ -108,6 +105,7 @@ public class Player : MonoBehaviour
         {
             if(brick.collider.name == "Brick")
             {
+                AddBrick();
                 HideBrick(brick.collider.gameObject);
             }    
         }    
@@ -121,8 +119,9 @@ public class Player : MonoBehaviour
     public void AddBrick()
     {
         Vector3 posSpawn = new Vector3(this.transform.position.x, posYSpawn, this.transform.position.z);
-        GameObject brick = SimplePool.Spawn(prefBrick, posSpawn, Quaternion.identity);
+        GameObject brick = SimplePool.Spawn(prefBrick, posSpawn, Quaternion.Euler(-90, 0, 0));
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + heightBrick, this.transform.position.z);
         stackBricks.Push(brick);
+        brick.transform.SetParent(posBrick);
     }
 }

@@ -13,7 +13,7 @@ namespace Game
 
         private void Start()
         {
-            Time.timeScale = 0.1f;
+            //Time.timeScale = 0.1f;
             player.Init(model.SpeedMoving);
         }
 

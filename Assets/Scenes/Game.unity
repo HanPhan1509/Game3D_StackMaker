@@ -527,6 +527,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &1617964787 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3293048124778387371, guid: 0a9b7956f0d20d146bd651306aa72e6f, type: 3}
+  m_PrefabInstance: {fileID: 1778203004}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1707523948 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7172092947858387803, guid: 9fe52a06aeb2ef244b32d57b118e830e, type: 3}
@@ -542,7 +547,7 @@ PrefabInstance:
     - target: {fileID: 2804253714263489928, guid: 0a9b7956f0d20d146bd651306aa72e6f, type: 3}
       propertyPath: posBrick
       value: 
-      objectReference: {fileID: 1802294432}
+      objectReference: {fileID: 1617964787}
     - target: {fileID: 2804253714263489928, guid: 0a9b7956f0d20d146bd651306aa72e6f, type: 3}
       propertyPath: prefBrick
       value: 
@@ -625,8 +630,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b309c6add01a72246b4646c430e9e217, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1802294432 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4663307929383617932, guid: 0a9b7956f0d20d146bd651306aa72e6f, type: 3}
-  m_PrefabInstance: {fileID: 1778203004}
-  m_PrefabAsset: {fileID: 0}
