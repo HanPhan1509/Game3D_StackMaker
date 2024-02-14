@@ -13,7 +13,6 @@ namespace Game
 
         private void Start()
         {
-            //Time.timeScale = 0.1f;
             player.Init(model.SpeedMoving);
         }
 
@@ -32,6 +31,6 @@ namespace Game
                 player.ChangeStatePlayer(StatePlayer.MoveRight);
             if (Input.GetKeyDown(KeyCode.A))
                 player.ChangeStatePlayer(StatePlayer.MoveLeft);
-        }
+        }  
     }
 }

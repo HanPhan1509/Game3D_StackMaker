@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -90,9 +92,18 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity);
         Debug.DrawRay(this.transform.position + checkBrick, transform.TransformDirection(Vector3.down), Color.black, Mathf.Infinity);
-        if (hit.collider == null || !hit.collider.tag.Contains("Brick"))
+        if (hit.collider == null)
         {
             statePlayer = StatePlayer.Idle;
+        } else
+        {
+            //if(!hit.collider.tag.Contains("Brick") && !hit.collider.tag.Contains("Bridge"))
+            if(hit.collider.tag.Contains("Wall"))
+                statePlayer = StatePlayer.Idle;
+            if(hit.collider.tag == "Bridge")
+            {
+                FillBrickOnBridge(hit.collider.transform);
+            }    
         }
     }
 
@@ -123,5 +134,19 @@ public class Player : MonoBehaviour
         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + heightBrick, this.transform.position.z);
         stackBricks.Push(brick);
         brick.transform.SetParent(posBrick);
+    }
+
+    private void FillBrickOnBridge(Transform bridge)
+    {
+        GameObject brick = stackBricks.Peek();
+        brick.transform.SetParent(bridge);
+        brick.transform.position = bridge.position;
+        RemoveBrick();
+    }    
+
+    private void RemoveBrick()
+    {
+        stackBricks.Pop();
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - heightBrick, this.transform.position.z);
     }
 }
