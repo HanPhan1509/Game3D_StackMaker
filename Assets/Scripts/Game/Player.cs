@@ -9,13 +9,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform posBrick;
     [SerializeField] private Stack<GameObject> stackBricks = new();
     private StatePlayer statePlayer;
-    private float speed       = 0.0f;
-    private float posYSpawn   = 0.0f;
+    private float speed = 0.0f;
+    private float posYSpawn = 0.0f;
     private float heightBrick = 0.0f;
-    private Vector3 current    = Vector3.zero;
-    private Vector3 target     = Vector3.zero;
+    private Vector3 current = Vector3.zero;
+    private Vector3 target = Vector3.zero;
     private Vector3 checkBrick = Vector3.zero;
 
+    private Action onGameover;
     private void Start()
     {
         checkBrick = Vector3.forward;
@@ -30,9 +31,10 @@ public class Player : MonoBehaviour
         CheckBrick();
     }
 
-    public void Init(float speed)
+    public void Init(float speed, Action onGameover)
     {
         this.speed = speed;
+        this.onGameover = onGameover;
     }
 
     public void ChangeStatePlayer(StatePlayer statePlayer)
@@ -76,7 +78,7 @@ public class Player : MonoBehaviour
                 posMoving = Vector3.right;
                 break;
         }
-        
+
         Moving(posMoving);
     }
 
@@ -95,37 +97,42 @@ public class Player : MonoBehaviour
         if (hit.collider == null)
         {
             statePlayer = StatePlayer.Idle;
-        } else
+        }
+        else
         {
             //if(!hit.collider.tag.Contains("Brick") && !hit.collider.tag.Contains("Bridge"))
-            if(hit.collider.tag.Contains("Wall"))
+            if (hit.collider.tag.Contains("Wall"))
                 statePlayer = StatePlayer.Idle;
-            if(hit.collider.tag == "Bridge")
-            {
-                FillBrickOnBridge(hit.collider.GetComponent<Bridge>());
-            }    
         }
     }
 
     public void CheckBrick()
     {
-        RaycastHit brick;
-        Physics.Raycast(this.transform.position, transform.TransformDirection(Vector3.down), out brick, Mathf.Infinity);
+        RaycastHit hit;
+        Physics.Raycast(this.transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity);
         //Debug.DrawRay(this.transform.position, transform.TransformDirection(Vector3.down), Color.red, Mathf.Infinity);
-        if (brick.collider != null)
+        if (hit.collider != null)
         {
-            if(brick.collider.name == "Brick")
+            if (hit.collider.name == "Brick")
             {
                 AddBrick();
-                HideBrick(brick.collider.gameObject);
-            }    
-        }    
-    }    
+                HideBrick(hit.collider.gameObject);
+            }
+            else if (hit.collider.tag == "Bridge")
+            {
+                FillBrickOnBridge(hit.collider.GetComponent<Bridge>());
+            }
+            else if (hit.collider.tag == "Finish")
+            {
+                onGameover?.Invoke();
+            }
+        }
+    }
 
     public void HideBrick(GameObject brick)
     {
         DestroyImmediate(brick);
-    }    
+    }
 
     public void AddBrick()
     {
@@ -146,7 +153,7 @@ public class Player : MonoBehaviour
         brick.transform.position = bridgeTransform.position;
         bridge.IsFill = true;
         RemoveBrick();
-    }    
+    }
 
     private void RemoveBrick()
     {

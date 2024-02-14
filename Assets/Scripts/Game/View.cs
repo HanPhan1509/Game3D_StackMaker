@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class View : MonoBehaviour
+namespace Game
 {
-    // Start is called before the first frame update
-    void Start()
+    public class View : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private UI_GameOver ui_GameOver;
+        [SerializeField] private UI_Start ui_Start;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public UI_GameOver UI_GameOver => ui_GameOver;
+        public UI_Start UI_Start => ui_Start;
     }
 }

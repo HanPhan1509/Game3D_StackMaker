@@ -16223,7 +16223,7 @@ GameObject:
   - component: {fileID: 2877855726164359911}
   m_Layer: 0
   m_Name: winpos
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32350,9 +32350,10 @@ GameObject:
   - component: {fileID: 2877732848944544594}
   - component: {fileID: 2849509070555522866}
   - component: {fileID: 2858959953110360928}
+  - component: {fileID: 1183699250357412837}
   m_Layer: 0
   m_Name: di
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32422,6 +32423,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1183699250357412837
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2880915759000797021}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99999905, y: 1.0000014, z: 1.0000031}
+  m_Center: {x: 0.0000010728836, y: 0.00000059604656, z: 0}
 --- !u!1 &2880920997806215849
 GameObject:
   m_ObjectHideFlags: 0
