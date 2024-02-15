@@ -57,7 +57,6 @@ namespace Game
         public void CreateBrigde()
         {
             float pos = 0;
-            //cube z dày
             for (int i = 0; i < quantityBrick; i++)
             {
                 GameObject bri = GameObject.Instantiate(prefabBridge, new Vector3(0, 0, pos), Quaternion.Euler(-90, 0, 0));
@@ -65,5 +64,29 @@ namespace Game
                 pos += widthBridge;
             }
         }
+
+        [Space(2f)]
+        [Header("MAP SETTINGS")]
+        [SerializeField] private Transform map;
+        [SerializeField] private List<Block> blocks;
+
+        [Button("Load Blocks")]
+        public void LoadBlock()
+        {
+            string folderPath = "Assets/Prefabs/Blocks";
+            string[] prefabPaths = AssetDatabase.FindAssets("Block_", new[] { folderPath });
+            // Lặp qua mỗi đường dẫn Prefab và in ra tên của nó
+            foreach (string prefabPath in prefabPaths)
+            {
+                string prefabFullPath = AssetDatabase.GUIDToAssetPath(prefabPath);
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabFullPath);
+                blocks.Add(prefab.GetComponent<Block>());
+
+                //if (prefab != null)
+                //{
+                //    Debug.Log("Prefab: " + prefab.name + " - Path: " + prefabFullPath);
+                //}
+            }
+        }    
     }
 }

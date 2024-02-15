@@ -1,12 +1,7 @@
-﻿using Game;
-using NaughtyAttributes;
-using System;
-using System.Collections;
+﻿using NaughtyAttributes;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 namespace Game
@@ -225,7 +220,7 @@ namespace Game
             string prefabPath = "Assets/Prefabs/Blocks/Block_" + selectedObject.name + ".prefab";
             PrefabUtility.SaveAsPrefabAsset(selectedObject, prefabPath);
 
-            Debug.Log("Prefab đã được lưu tại đường dẫn: " + prefabPath);
+            //Debug.Log("Prefab đã được lưu tại đường dẫn: " + prefabPath);
         }
     }
 }
