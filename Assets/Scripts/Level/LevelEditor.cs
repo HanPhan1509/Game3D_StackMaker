@@ -14,7 +14,6 @@ namespace Game
     }
     public class LevelEditor : MonoBehaviour
     {
-        [SerializeField] private Transform bridge;
         [SerializeField] private GameObject prefabBridge;
         [SerializeField] private Block block;
         [SerializeField] private int quantityBrick = 10;
@@ -47,20 +46,20 @@ namespace Game
         public void ClearMap()
         {
             block.ClearBlock();
-            for (int i = bridge.childCount - 1; i >= 0; i--)
-            {
-                DestroyImmediate(bridge.GetChild(i).gameObject);
-            }
+            //for (int i = bridge.childCount - 1; i >= 0; i--)
+            //{
+            //    DestroyImmediate(bridge.GetChild(i).gameObject);
+            //}
         }
 
-        [Button("Create Bridge")]
-        public void CreateBrigde()
+        public void CreateBrigde(int quantitySpawn)
         {
             float pos = 0;
-            for (int i = 0; i < quantityBrick; i++)
+            GameObject bridge = new GameObject();
+            for (int i = 0; i < quantitySpawn; i++)
             {
                 GameObject bri = GameObject.Instantiate(prefabBridge, new Vector3(0, 0, pos), Quaternion.Euler(-90, 0, 0));
-                bri.transform.SetParent(bridge);
+                bri.transform.SetParent(bridge.transform);
                 pos += widthBridge;
             }
         }
@@ -69,6 +68,8 @@ namespace Game
         [Header("MAP SETTINGS")]
         [SerializeField] private Transform map;
         [SerializeField] private List<Block> blocks;
+        [SerializeField] private int quantityBlock = 3;
+        [SerializeField] private int totalBricks = 0;
 
         [Button("Load Blocks")]
         public void LoadBlock()
@@ -81,12 +82,34 @@ namespace Game
                 string prefabFullPath = AssetDatabase.GUIDToAssetPath(prefabPath);
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabFullPath);
                 blocks.Add(prefab.GetComponent<Block>());
-
-                //if (prefab != null)
-                //{
-                //    Debug.Log("Prefab: " + prefab.name + " - Path: " + prefabFullPath);
-                //}
             }
+        }
+
+        [Button("Get Blocks")]
+        private void GetBlocksInLevel()
+        {
+            Queue<Block> levelBlocks = new();
+            for(int i = 0; i < quantityBlock; i++)
+            {
+                Block block = blocks[UnityEngine.Random.Range(0, blocks.Count)];
+                totalBricks += (block.LstBrickBody.Count + 2);
+                levelBlocks.Enqueue(block);
+            }
+            GetBridgeInLevel();
+        }
+
+        private void GetBridgeInLevel()
+        {
+            int quantityLine = totalBricks / quantityBlock;
+            int quantitySpawn = quantityLine;
+            Debug.Log($"HANN 1: totalBricks: {totalBricks} | quantityLine: {quantityLine}");
+            for(int i = 0; i < quantityBlock; i++)
+            {
+                if (i == quantityBlock - 1)
+                    quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
+                Debug.Log($"HANN 2: quantitySpawn: {quantitySpawn}");
+                CreateBrigde(quantitySpawn);
+            }    
         }    
     }
 }

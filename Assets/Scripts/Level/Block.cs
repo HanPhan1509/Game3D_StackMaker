@@ -31,6 +31,9 @@ namespace Game
         private List<Privote> lstPrivoteDespawn = new();
         private List<Privote> lstPrivote = new();
 
+        public Vector3 FirstBrick { get => firstBrick; set => firstBrick = value; }
+        public Vector3 LastBrick1 { get => lastBrick; set => lastBrick = value; }
+        public List<Vector3> LstBrickBody { get => lstBrickBody; set => lstBrickBody = value; }
 
         public void Init(Vector3 minLimit, Vector3 maxLimit, float minQuantityPrivote, float maxQuantityPrivote, float widthPrivote)
         {
