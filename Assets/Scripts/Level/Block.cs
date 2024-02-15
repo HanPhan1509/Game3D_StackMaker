@@ -32,7 +32,7 @@ namespace Game
         private List<Privote> lstPrivote = new();
 
         public Vector3 FirstBrick { get => firstBrick; set => firstBrick = value; }
-        public Vector3 LastBrick1 { get => lastBrick; set => lastBrick = value; }
+        public Vector3 LastBrick { get => lastBrick; set => lastBrick = value; }
         public List<Vector3> LstBrickBody { get => lstBrickBody; set => lstBrickBody = value; }
 
         public void Init(Vector3 minLimit, Vector3 maxLimit, float minQuantityPrivote, float maxQuantityPrivote, float widthPrivote)
@@ -80,7 +80,7 @@ namespace Game
         [Button("Create Line Brick")]
         public void FindLineBrick()
         {
-            Vector3 firstBrick = SpawnFirstPrivoteBrick();
+            firstBrick = SpawnFirstPrivoteBrick();
             SpawnBrick(firstBrick);
 
             do
@@ -115,11 +115,11 @@ namespace Game
                     lstBrickBody.RemoveAt(indexDuplicate);
             } while (lstBrickBody.Count > maxQuantityPrivote || lstBrickBody.Count < minQuantityPrivote);
 
-            LastBrick();
+            SpawnLastBrick();
             DestroyLineBrick();
         }
 
-        private void LastBrick()
+        private void SpawnLastBrick()
         {
             lastBrick = lstBrickBody[lstBrickBody.Count - 1];
             lstBrickBody.RemoveAt(lstBrickBody.Count - 1);
