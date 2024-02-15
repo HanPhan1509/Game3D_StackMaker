@@ -77230,7 +77230,7 @@ GameObject:
   - component: {fileID: 6944310750515026281}
   - component: {fileID: 5079719654178853693}
   m_Layer: 0
-  m_Name: Map
+  m_Name: Map_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77271,7 +77271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  posPlayer: {x: 0, y: 0, z: 0}
+  posPlayer: {x: -3, y: 0, z: -5}
   quantityBlock: 0
   startBlock: {fileID: 0}
   blocks: []

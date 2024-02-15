@@ -123,10 +123,12 @@ namespace Game
             for (int i = 0; i < quantityBlock; i++)
             {
                 Block blockSpawn = levelBlocks.Dequeue();
+                //if (i == 0)
+                //    map.GetComponent<Map>().posPlayer = blockSpawn.FirstBrick;
                 AutomationCreateBlock(blockSpawn.gameObject, map.transform, posSpawnBlock);
                 if (i == quantityBlock - 1)
                     quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
-                AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(blockSpawn.LastBrick.x, blockSpawn.LastBrick.y, posSpawnBlock.z + blockSpawn.LastBrick.z));
+                AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(blockSpawn.LastBrick.x, blockSpawn.LastBrick.y, posSpawnBlock.z + blockSpawn.LastBrick.z + 1));
                 Debug.Log($"Result: {blockSpawn.FirstBrick.x} - {blockSpawn.LastBrick.x} = {blockSpawn.FirstBrick.x + blockSpawn.LastBrick.x}");
                 posSpawnBlock = new Vector3(blockSpawn.FirstBrick.x + blockSpawn.LastBrick.x, 0, posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn);
             }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,14 +13,30 @@ namespace Game
         [SerializeField] private Model model;
         [SerializeField] private View view;
         [SerializeField] private Player player;
+        [SerializeField] private Transform gameSpace;
+        private List<Map> maps = new();
         private bool isGameover = false;
+        private int levelMap = 0;
 
         private void Start()
         {
+            LoadMap();
             isGameover = true;
             view.UI_Start.gameObject.SetActive(true);
             player.Init(model.SpeedMoving, GameOver);
         }
+
+        private void LoadMap()
+        {
+            string folderPath = "Assets/Resources";
+            string[] prefabPaths = AssetDatabase.FindAssets("Map_", new[] { folderPath });
+            foreach (string prefabPath in prefabPaths)
+            {
+                string prefabFullPath = AssetDatabase.GUIDToAssetPath(prefabPath);
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabFullPath);
+                maps.Add(prefab.GetComponent<Map>());
+            }
+        }    
 
         void Update()
         {
@@ -50,6 +68,12 @@ namespace Game
         public void ButtonPlay()
         {
             isGameover = false;
+            GameObject mapSpace = new GameObject("Map");
+            mapSpace.transform.SetParent(gameSpace);
+            Debug.Log(maps[levelMap].gameObject.name);
+            Map map = GameObject.Instantiate(maps[levelMap].gameObject).GetComponent<Map>();
+            map.transform.SetParent(mapSpace.transform);
+            player.transform.position = new Vector3(map.posPlayer.x, 3.055f, map.posPlayer.z);
         }    
 
         public void ButtonReplay()
@@ -59,7 +83,10 @@ namespace Game
 
         public void ButtonNext()
         {
-            Debug.Log("Next");
+            DestroyImmediate(gameSpace.GetChild(0).gameObject);
+            view.UI_GameOver.gameObject.SetActive(false);
+            levelMap++;
+            ButtonPlay();
         }    
     }
 }
