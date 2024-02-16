@@ -10,6 +10,7 @@ namespace Game
 {
     public class Controller : MonoBehaviour
     {
+        [SerializeField] private AudioManager audio;
         [SerializeField] private Model model;
         [SerializeField] private View view;
         [SerializeField] private Player player;
@@ -20,6 +21,7 @@ namespace Game
 
         private void Start()
         {
+            audio.PlaySound(SoundType.soundBG);
             LoadMap();
             isGameover = true;
             view.UI_Start.gameObject.SetActive(true);
