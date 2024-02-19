@@ -1,8 +1,10 @@
 ﻿using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Game
 {
@@ -15,6 +17,7 @@ namespace Game
     public class LevelEditor : MonoBehaviour
     {
         [SerializeField] private GameObject prefabBridge;
+        [SerializeField] private GameObject prefabFinish;
         [SerializeField] private Block block;
 
         [Space(2f)]
@@ -77,7 +80,7 @@ namespace Game
         {
             string folderPath = "Assets/Prefabs/Blocks";
             string[] prefabPaths = AssetDatabase.FindAssets("Block_", new[] { folderPath });
-            
+
             foreach (string prefabPath in prefabPaths)
             {
                 string prefabFullPath = AssetDatabase.GUIDToAssetPath(prefabPath);
@@ -103,20 +106,25 @@ namespace Game
         {
             int quantityLine = totalBricks / quantityBlock;
             int quantitySpawn = quantityLine;
-            for(int i = 0; i < quantityBlock; i++)
+            for (int i = 0; i < quantityBlock; i++)
             {
                 if (i == quantityBlock - 1)
                     quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
                 CreateBrigde(quantitySpawn);
-            }    
+            }
         }
 
         [Button("Create Map")]
         public void CreateMap()
         {
+            Vector3 posSpawnBlock = Vector3.zero;
+            Vector3 posFirstBrick = Vector3.zero;
+            Vector3 posLastBrick = Vector3.zero;
+            float currentX = 0;
+            float currentZ = 0;
+
             GameObject map = new GameObject("Map");
             map.AddComponent<Map>();
-            Vector3 posSpawnBlock = Vector3.zero;
             int quantityLine = totalBricks / quantityBlock;
             int quantitySpawn = quantityLine;
 
@@ -125,15 +133,49 @@ namespace Game
                 Block blockSpawn = levelBlocks.Dequeue();
                 //if (i == 0)
                 //    map.GetComponent<Map>().posPlayer = blockSpawn.FirstBrick;
+                if (i > 0)
+                {
+                    posFirstBrick = blockSpawn.FirstBrick;
+                    currentX = PositionSpawn(currentX, posFirstBrick, posLastBrick);
+                    currentZ = posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn + 1f;
+                    posSpawnBlock = new Vector3(currentX, 0, currentZ);
+                }
+                Debug.Log(currentZ);
                 AutomationCreateBlock(blockSpawn.gameObject, map.transform, posSpawnBlock);
+                posLastBrick = blockSpawn.LastBrick;
                 if (i == quantityBlock - 1)
                     quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
-                AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(blockSpawn.LastBrick.x, blockSpawn.LastBrick.y, posSpawnBlock.z + blockSpawn.LastBrick.z + 1));
-                Debug.Log($"Result: {blockSpawn.FirstBrick.x} - {blockSpawn.LastBrick.x} = {blockSpawn.FirstBrick.x + blockSpawn.LastBrick.x}");
-                posSpawnBlock = new Vector3(blockSpawn.FirstBrick.x + blockSpawn.LastBrick.x, 0, posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn + 1f);
+                currentZ += blockSpawn.LastBrick.z + 1;
+                Debug.Log(currentZ);
+                AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(blockSpawn.LastBrick.x, blockSpawn.LastBrick.y, currentZ));
             }
 
+            currentZ += quantitySpawn;
+            Debug.Log(currentZ);
+            Vector3 posFinish = new Vector3(currentX, 0, currentZ);
+            //Spawn finish block
+            GameObject finishBlock = GameObject.Instantiate(prefabFinish, posFinish, Quaternion.identity, map.transform);
+
             //map.GetComponent<Map>().posPlayer = block.FirstBrick;
+        }
+
+        private float PositionSpawn(float currentX, Vector3 posFirstBrick, Vector3 posLastBrick)
+        {
+            float disAC = 0, disBC = 0, distanceAB = 0;
+            disAC = Math.Abs(posFirstBrick.x);
+            disBC = Math.Abs(posLastBrick.x);
+            if ((posFirstBrick.x < 0 && posLastBrick.x < 0) || (posFirstBrick.x > 0 && posLastBrick.x > 0))
+            {
+                distanceAB = disAC - disBC;
+            }
+            else
+            {
+                distanceAB = disAC + disBC;
+            }
+
+            currentX += posLastBrick.x;
+
+            return distanceAB;
         }
 
         public void AutomationCreateBlock(GameObject prefab, Transform parent, Vector3 position)
@@ -153,6 +195,6 @@ namespace Game
             }
             bridge.transform.SetParent(parent.transform);
             bridge.transform.position = new Vector3(position.x, 2.5f, position.z);
-        }    
+        }
     }
 }

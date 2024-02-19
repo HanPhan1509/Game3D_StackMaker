@@ -7553,7 +7553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778375c4cd172044c8672df84049e0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstBrick: {x: 0, y: 0, z: 0}
+  firstBrick: {x: -1, y: 0, z: -5}
   lastBrick: {x: 3, y: 0, z: 5}
   lstBrickBody:
   - {x: -1, y: 0, z: -4}
