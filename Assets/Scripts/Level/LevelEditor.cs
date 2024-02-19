@@ -77,7 +77,7 @@ namespace Game
         {
             string folderPath = "Assets/Prefabs/Blocks";
             string[] prefabPaths = AssetDatabase.FindAssets("Block_", new[] { folderPath });
-            // Lặp qua mỗi đường dẫn Prefab và in ra tên của nó
+            
             foreach (string prefabPath in prefabPaths)
             {
                 string prefabFullPath = AssetDatabase.GUIDToAssetPath(prefabPath);
@@ -130,7 +130,7 @@ namespace Game
                     quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
                 AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(blockSpawn.LastBrick.x, blockSpawn.LastBrick.y, posSpawnBlock.z + blockSpawn.LastBrick.z + 1));
                 Debug.Log($"Result: {blockSpawn.FirstBrick.x} - {blockSpawn.LastBrick.x} = {blockSpawn.FirstBrick.x + blockSpawn.LastBrick.x}");
-                posSpawnBlock = new Vector3(blockSpawn.FirstBrick.x + blockSpawn.LastBrick.x, 0, posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn);
+                posSpawnBlock = new Vector3(blockSpawn.FirstBrick.x + blockSpawn.LastBrick.x, 0, posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn + 1f);
             }
 
             //map.GetComponent<Map>().posPlayer = block.FirstBrick;
