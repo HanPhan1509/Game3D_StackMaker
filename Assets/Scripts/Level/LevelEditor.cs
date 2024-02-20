@@ -154,12 +154,10 @@ namespace Game
                 }
                 currentZ += blockSpawn.LastBrick.z + 1;
                 posXBridge = posXBlock + blockSpawn.LastBrick.x;
-                Debug.Log($"posXBlock = {posXBlock} == Pos x bridge = {posXBridge}");
                 AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(posXBridge, blockSpawn.LastBrick.y, currentZ));
             }
 
             currentZ += quantitySpawn;
-            Debug.Log(currentZ);
             Vector3 posFinish = new Vector3(posXBridge, 0, currentZ);
             //Spawn finish block
             GameObject finishBlock = GameObject.Instantiate(prefabFinish, posFinish, Quaternion.identity, map.transform);
@@ -168,24 +166,22 @@ namespace Game
         private float PositionSpawn(float posXBlock, Vector3 posFirstBrick, Vector3 posLastBrick)
         {
             float disAC = 0, disBC = 0, distanceAB = 0;
-            disAC = Vector3.Distance(posFirstBrick, new Vector3(posXBlock, posFirstBrick.y, posFirstBrick.z));
-            disBC = Vector3.Distance(posLastBrick, new Vector3(posXBlock, posLastBrick.y, posLastBrick.z));
+            //disAC = Vector3.Distance(posFirstBrick, new Vector3(posXBlock, posFirstBrick.y, posFirstBrick.z));
+            //disBC = Vector3.Distance(posLastBrick, new Vector3(posXBlock, posLastBrick.y, posLastBrick.z));
             //disAC = Math.Abs(posFirstBrick.x);
             //disBC = Math.Abs(posLastBrick.x);
-            Debug.Log("AC = " + disAC);
-            Debug.Log("BC = " + disBC);
-            if ((posFirstBrick.x < 0 && posLastBrick.x < 0) || (posFirstBrick.x > 0 && posLastBrick.x > 0))
-            {
-                distanceAB = disAC - disBC;
-            }
-            else
-            {
-                distanceAB = disAC + disBC;
-            }
+            //if ((posFirstBrick.x < 0 && posLastBrick.x < 0) || (posFirstBrick.x > 0 && posLastBrick.x > 0))
+            //{
+            //    distanceAB = disAC - disBC;
+            //}
+            //else
+            //{
+            //    distanceAB = disAC + disBC;
+            //}
 
-            posXBlock += posLastBrick.x;
+            float posXNextBlock = posXBlock + posLastBrick.x - posFirstBrick.x;
 
-            return distanceAB;
+            return posXNextBlock;
         }
 
         public void AutomationCreateBlock(GameObject prefab, Transform parent, Vector3 position)
