@@ -26,6 +26,7 @@ namespace Game
             isGameover = true;
             view.UI_Start.gameObject.SetActive(true);
             player.Init(model.SpeedMoving, GameOver);
+            player.gameObject.SetActive(false);
         }
 
         private void LoadMap()
@@ -70,6 +71,7 @@ namespace Game
         public void ButtonPlay()
         {
             isGameover = false;
+            player.gameObject.SetActive(true);
             GameObject mapSpace = new GameObject("Map");
             mapSpace.transform.SetParent(gameSpace);
             Debug.Log(maps[levelMap].gameObject.name);
