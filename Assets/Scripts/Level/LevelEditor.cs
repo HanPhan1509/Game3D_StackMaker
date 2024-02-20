@@ -27,8 +27,16 @@ namespace Game
 
         private float widthBridge = 0.0f;
 
+        [Button("Automation Create Map")]
+        public void AutomationCreateMap()
+        {
+            GetValue();
+            LoadBlock();
+            GetBlocksInLevel();
+            CreateMap();
+        }    
 
-        [Button("Get value")]
+        //[Button("Get value")]
         public void GetValue()
         {
             widthBridge = prefabBridge.GetComponent<MeshFilter>().sharedMesh.bounds.size.y;
@@ -53,9 +61,9 @@ namespace Game
         [SerializeField] private Queue<Block> levelBlocks = new();
         [SerializeField] private Queue<GameObject> bridges = new();
         [SerializeField] private int quantityBlock = 3;
-        [SerializeField] private int totalBricks = 0;
+        //[SerializeField] private int totalBricks = 0;
 
-        [Button("Load Blocks")]
+        //[Button("Load Blocks")]
         public void LoadBlock()
         {
             blocks.Clear();
@@ -70,32 +78,32 @@ namespace Game
             }
         }
 
-        [Button("Get Blocks")]
+        //[Button("Get Blocks")]
         public void GetBlocksInLevel()
         {
-            totalBricks = 0;
+            //totalBricks = 0;
             for (int i = 0; i < quantityBlock; i++)
             {
                 Block block = blocks[UnityEngine.Random.Range(0, blocks.Count)];
-                totalBricks += (block.LstBrickBody.Count + 2);
+                //totalBricks += (block.LstBrickBody.Count + 2);
                 levelBlocks.Enqueue(block);
             }
             //GetBridgeInLevel();
         }
 
-        private void GetBridgeInLevel()
-        {
-            int quantityLine = totalBricks / quantityBlock;
-            int quantitySpawn = quantityLine;
-            for (int i = 0; i < quantityBlock; i++)
-            {
-                if (i == quantityBlock - 1)
-                    quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
-                CreateBrigde(quantitySpawn);
-            }
-        }
+        //private void GetBridgeInLevel()
+        //{
+        //    int quantityLine = totalBricks / quantityBlock;
+        //    int quantitySpawn = quantityLine;
+        //    for (int i = 0; i < quantityBlock; i++)
+        //    {
+        //        if (i == quantityBlock - 1)
+        //            quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
+        //        CreateBrigde(quantitySpawn);
+        //    }
+        //}
 
-        [Button("Create Map")]
+        //[Button("Create Map")]
         public void CreateMap()
         {
             Vector3 posSpawnBlock = Vector3.zero;
@@ -107,7 +115,8 @@ namespace Game
 
             GameObject map = new GameObject("Map");
             map.AddComponent<Map>();
-            int quantityLine = totalBricks / quantityBlock;
+            //int quantityLine = totalBricks / quantityBlock;
+            int quantityLine = 0;
             int quantitySpawn = quantityLine;
 
             for (int i = 0; i < quantityBlock; i++)
@@ -133,7 +142,6 @@ namespace Game
                 //    //quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
                 //}
                 quantitySpawn = blockSpawn.LstBrickBody.Count + 2;
-                Debug.Log("HANN 1 => " + blockSpawn.gameObject.name + " " + blockSpawn.LstBrickBody.Count);
                 currentZ += blockSpawn.LastBrick.z + 1;
                 posXBridge = posXBlock + blockSpawn.LastBrick.x;
                 AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(posXBridge, blockSpawn.LastBrick.y, currentZ));
@@ -151,7 +159,6 @@ namespace Game
 
         public void AutomationCreateBridge(int quantitySpawn, Transform parent, Vector3 position)
         {
-            Debug.Log("HANN quantity => " + quantitySpawn);
             float pos = 0;
             GameObject bridge = new GameObject("Bridge");
             for (int i = 0; i < quantitySpawn; i++)
