@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -192,11 +193,13 @@ namespace Game
         [Button("Save Prefab")]
         public static void SavePrefab()
         {
-            GameObject selectedObject = Selection.activeGameObject;
-            string prefabPath = "Assets/Prefabs/Blocks/Block_" + selectedObject.name + ".prefab";
-            PrefabUtility.SaveAsPrefabAsset(selectedObject, prefabPath);
+            string folderPath = "Assets/Prefabs/Blocks";
+            string[] prefabPaths = AssetDatabase.FindAssets("Block_", new[] { folderPath });
 
-            //Debug.Log("Prefab đã được lưu tại đường dẫn: " + prefabPath);
+            GameObject selectedObject = Selection.activeGameObject;
+            int numberBlock = prefabPaths.Length + 1;
+            string prefabPath = "Assets/Prefabs/Blocks/Block_" + numberBlock.ToString() + ".prefab";
+            PrefabUtility.SaveAsPrefabAsset(selectedObject, prefabPath);
         }
     }
 }
