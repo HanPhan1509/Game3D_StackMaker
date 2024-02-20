@@ -11,9 +11,9 @@ namespace Game
 {
     public class Block : MonoBehaviour
     {
-        [SerializeField] private Vector3 firstBrick;
-        [SerializeField] private Vector3 lastBrick;
-        [SerializeField] private List<Vector3> lstBrickBody;
+        private Vector3 firstBrick;
+        private Vector3 lastBrick;
+        private List<Vector3> lstBrickBody;
 
         [Space(2f)]
         [Header("GAMEOBJECT")]
@@ -40,7 +40,25 @@ namespace Game
         public Vector3 LastBrick { get => lastBrick; set => lastBrick = value; }
         public List<Vector3> LstBrickBody { get => lstBrickBody; set => lstBrickBody = value; }
 
-        [Button("Get Values")]
+        [Space(2f)]
+        [Header("AUTOMATION CREATE BLOCK")]
+        [SerializeField] private int numberCreate = 10;
+        [Button("Automation Create Block")]
+        public void AutomationCreate()
+        {
+            ClearBlock();
+            GetValues();
+            string folderPath = "Assets/Prefabs/Blocks";
+            string[] prefabPaths = AssetDatabase.FindAssets("Block_", new[] { folderPath });
+            for (int i = prefabPaths.Length; i < prefabPaths.Length + numberCreate; i++)
+            {
+                CreateBlock();
+                SavePrefab(i + 1);
+                ClearBlock();
+            }
+        }
+
+        //[Button("Get Values")]
         public void GetValues()
         {
             widthPrivote = prefabPrivoteWall.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.y;
@@ -48,7 +66,7 @@ namespace Game
             maxQuantityPrivote = minQuantityPrivote * 3f;
         }
 
-        [Button("Clear Block")]
+        //[Button("Clear Block")]
         public void ClearBlock()
         {
             lstPrivote.Clear();
@@ -60,7 +78,7 @@ namespace Game
             }
         }
 
-        [Button("Create Block")]
+        //[Button("Create Block")]
         public void CreateBlock()
         {
             int id = 0;
@@ -82,7 +100,7 @@ namespace Game
             FindLineBrick();
         }
 
-        [Button("Create Line Brick")]
+        //[Button("Create Line Brick")]
         public void FindLineBrick()
         {
             firstBrick = SpawnFirstPrivoteBrick();
@@ -118,7 +136,7 @@ namespace Game
             lstBrickBody.RemoveAt(lstBrickBody.Count - 1);
             DestroyImmediate(lstPrivote.Find(x => x.position == lastBrick).privote);
             SpawnBrick(lastBrick);
-        }    
+        }
 
         private Vector3 SpawnFirstPrivoteBrick()
         {
@@ -127,7 +145,7 @@ namespace Game
             //Filter all the first and last privote walls
             foreach (Privote privote in lstPrivote)
             {
-                if (privote.position.z == minLimit.z)
+                if (privote.position.z == minLimit.z && privote.position.x > minLimit.x && privote.position.x < maxLimit.x)
                     lstStartPrivote.Add(privote.id);
             }
 
@@ -165,12 +183,13 @@ namespace Game
 
         private bool CheckPositionInLimitSpawn(Vector3 posCheck)
         {
+            Debug.Log(posCheck.ToString());
             if (posCheck.x < minLimit.x + 1f || posCheck.x > maxLimit.x - 1f || posCheck.z < minLimit.z + 1f)
                 return true;
             return false;
         }
 
-        [Button("Destroy Line Brick")]
+        //[Button("Destroy Line Brick")]
         public void DestroyLineBrick()
         {
             foreach (Vector3 pos in lstBrickBody)
@@ -179,8 +198,8 @@ namespace Game
             }
             SpawnBodyBrick();
         }
-        [Button("Spawn Body Brick")]
 
+        //[Button("Spawn Body Brick")]
         public void SpawnBodyBrick()
         {
             foreach (Vector3 posSpawn in lstBrickBody)
@@ -190,14 +209,18 @@ namespace Game
         }
 
         //[MenuItem("Tools/Save Prefab")]
-        [Button("Save Prefab")]
-        public static void SavePrefab()
+        //[Button("Save Prefab")]
+        public static void SavePrefab(int numberSave = -1)
         {
+            int numberBlock = 0;
             string folderPath = "Assets/Prefabs/Blocks";
             string[] prefabPaths = AssetDatabase.FindAssets("Block_", new[] { folderPath });
 
             GameObject selectedObject = Selection.activeGameObject;
-            int numberBlock = prefabPaths.Length + 1;
+
+            if (numberSave > -1) numberBlock = numberSave;
+            else numberBlock = prefabPaths.Length + 1;
+
             string prefabPath = "Assets/Prefabs/Blocks/Block_" + numberBlock.ToString() + ".prefab";
             PrefabUtility.SaveAsPrefabAsset(selectedObject, prefabPath);
         }
