@@ -11,9 +11,9 @@ public class UI_GameOver : MonoBehaviour
     [SerializeField] private UnityEvent OnButtonNext;
     [SerializeField] private UnityEvent OnButtonReplay;
 
-    public void ShowPopup(bool isNext = true)
+    public void ShowPopup(bool isMaxLevel = false)
     {
-        buttonNext.gameObject.SetActive(isNext);
+        buttonNext.gameObject.SetActive(!isMaxLevel);
     }    
     public void ButtonReplay()
     {

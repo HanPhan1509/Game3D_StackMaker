@@ -64,7 +64,7 @@ namespace Game
         {
             isGameover = true;
             view.UI_GameOver.gameObject.SetActive(true);
-            view.UI_GameOver.ShowPopup();
+            view.UI_GameOver.ShowPopup(levelMap == maps.Count - 1);
         }
 
         public void ButtonPlay()

@@ -140,7 +140,7 @@ namespace Game
                 if (i > 0)
                 {
                     posFirstBrick = blockSpawn.FirstBrick;
-                    posXBlock = PositionSpawn(posXBlock, posFirstBrick, posLastBrick);
+                    posXBlock = posXBlock + posLastBrick.x - posFirstBrick.x; ;
                     currentZ = posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn + 1f;
                     posSpawnBlock = new Vector3(posXBlock, 0, currentZ);
                 }
@@ -162,28 +162,6 @@ namespace Game
             //Spawn finish block
             GameObject finishBlock = GameObject.Instantiate(prefabFinish, posFinish, Quaternion.identity, map.transform);
         }
-
-        private float PositionSpawn(float posXBlock, Vector3 posFirstBrick, Vector3 posLastBrick)
-        {
-            float disAC = 0, disBC = 0, distanceAB = 0;
-            //disAC = Vector3.Distance(posFirstBrick, new Vector3(posXBlock, posFirstBrick.y, posFirstBrick.z));
-            //disBC = Vector3.Distance(posLastBrick, new Vector3(posXBlock, posLastBrick.y, posLastBrick.z));
-            //disAC = Math.Abs(posFirstBrick.x);
-            //disBC = Math.Abs(posLastBrick.x);
-            //if ((posFirstBrick.x < 0 && posLastBrick.x < 0) || (posFirstBrick.x > 0 && posLastBrick.x > 0))
-            //{
-            //    distanceAB = disAC - disBC;
-            //}
-            //else
-            //{
-            //    distanceAB = disAC + disBC;
-            //}
-
-            float posXNextBlock = posXBlock + posLastBrick.x - posFirstBrick.x;
-
-            return posXNextBlock;
-        }
-
         public void AutomationCreateBlock(GameObject prefab, Transform parent, Vector3 position)
         {
             Block block = GameObject.Instantiate(prefab, position, Quaternion.identity, parent).GetComponent<Block>();
