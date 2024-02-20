@@ -58,6 +58,7 @@ namespace Game
         [Button("Load Blocks")]
         public void LoadBlock()
         {
+            blocks.Clear();
             string folderPath = "Assets/Prefabs/Blocks";
             string[] prefabPaths = AssetDatabase.FindAssets("Block_", new[] { folderPath });
 
@@ -70,7 +71,7 @@ namespace Game
         }
 
         [Button("Get Blocks")]
-        private void GetBlocksInLevel()
+        public void GetBlocksInLevel()
         {
             totalBricks = 0;
             for (int i = 0; i < quantityBlock; i++)
@@ -124,14 +125,15 @@ namespace Game
                     currentZ = posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn + 1f;
                     posSpawnBlock = new Vector3(posXBlock, 0, currentZ);
                 }
-                Debug.Log(currentZ);
                 AutomationCreateBlock(blockSpawn.gameObject, map.transform, posSpawnBlock);
                 posLastBrick = blockSpawn.LastBrick;
-                if (i == quantityBlock - 1)
-                {
-                    quantitySpawn = blockSpawn.LstBrickBody.Count;
-                    //quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
-                }
+                //if (i == quantityBlock - 1)
+                //{
+                //    quantitySpawn = blockSpawn.LstBrickBody.Count + 2;
+                //    //quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
+                //}
+                quantitySpawn = blockSpawn.LstBrickBody.Count + 2;
+                Debug.Log("HANN 1 => " + blockSpawn.gameObject.name + " " + blockSpawn.LstBrickBody.Count);
                 currentZ += blockSpawn.LastBrick.z + 1;
                 posXBridge = posXBlock + blockSpawn.LastBrick.x;
                 AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(posXBridge, blockSpawn.LastBrick.y, currentZ));
@@ -149,6 +151,7 @@ namespace Game
 
         public void AutomationCreateBridge(int quantitySpawn, Transform parent, Vector3 position)
         {
+            Debug.Log("HANN quantity => " + quantitySpawn);
             float pos = 0;
             GameObject bridge = new GameObject("Bridge");
             for (int i = 0; i < quantitySpawn; i++)

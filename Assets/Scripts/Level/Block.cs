@@ -11,9 +11,9 @@ namespace Game
 {
     public class Block : MonoBehaviour
     {
-        private Vector3 firstBrick;
-        private Vector3 lastBrick;
-        private List<Vector3> lstBrickBody;
+        [SerializeField] private Vector3 firstBrick;
+        [SerializeField] private Vector3 lastBrick;
+        [SerializeField] private List<Vector3> lstBrickBody;
 
         [Space(2f)]
         [Header("GAMEOBJECT")]
