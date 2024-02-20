@@ -120,8 +120,9 @@ namespace Game
             Vector3 posSpawnBlock = Vector3.zero;
             Vector3 posFirstBrick = Vector3.zero;
             Vector3 posLastBrick = Vector3.zero;
-            float currentX = 0;
+            float posXBlock = 0;
             float currentZ = 0;
+            float posXBridge = 0;
 
             GameObject map = new GameObject("Map");
             map.AddComponent<Map>();
@@ -131,39 +132,48 @@ namespace Game
             for (int i = 0; i < quantityBlock; i++)
             {
                 Block blockSpawn = levelBlocks.Dequeue();
-                //if (i == 0)
-                //    map.GetComponent<Map>().posPlayer = blockSpawn.FirstBrick;
+                if (i == 0)
+                {
+                    posXBridge = blockSpawn.LastBrick.x;
+                    map.GetComponent<Map>().posPlayer = blockSpawn.FirstBrick;
+                }
                 if (i > 0)
                 {
                     posFirstBrick = blockSpawn.FirstBrick;
-                    currentX = PositionSpawn(currentX, posFirstBrick, posLastBrick);
+                    posXBlock = PositionSpawn(posXBlock, posFirstBrick, posLastBrick);
                     currentZ = posSpawnBlock.z + Math.Abs(maxLimit.x - minLimit.x) + quantitySpawn + 1f;
-                    posSpawnBlock = new Vector3(currentX, 0, currentZ);
+                    posSpawnBlock = new Vector3(posXBlock, 0, currentZ);
                 }
                 Debug.Log(currentZ);
                 AutomationCreateBlock(blockSpawn.gameObject, map.transform, posSpawnBlock);
                 posLastBrick = blockSpawn.LastBrick;
                 if (i == quantityBlock - 1)
-                    quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
+                {
+                    quantitySpawn = blockSpawn.LstBrickBody.Count;
+                    //quantitySpawn = totalBricks - (quantityLine * (quantityBlock - 1));
+                }
                 currentZ += blockSpawn.LastBrick.z + 1;
-                Debug.Log(currentZ);
-                AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(blockSpawn.LastBrick.x, blockSpawn.LastBrick.y, currentZ));
+                posXBridge = posXBlock + blockSpawn.LastBrick.x;
+                Debug.Log($"posXBlock = {posXBlock} == Pos x bridge = {posXBridge}");
+                AutomationCreateBridge(quantitySpawn, map.transform, new Vector3(posXBridge, blockSpawn.LastBrick.y, currentZ));
             }
 
             currentZ += quantitySpawn;
             Debug.Log(currentZ);
-            Vector3 posFinish = new Vector3(currentX, 0, currentZ);
+            Vector3 posFinish = new Vector3(posXBridge, 0, currentZ);
             //Spawn finish block
             GameObject finishBlock = GameObject.Instantiate(prefabFinish, posFinish, Quaternion.identity, map.transform);
-
-            //map.GetComponent<Map>().posPlayer = block.FirstBrick;
         }
 
-        private float PositionSpawn(float currentX, Vector3 posFirstBrick, Vector3 posLastBrick)
+        private float PositionSpawn(float posXBlock, Vector3 posFirstBrick, Vector3 posLastBrick)
         {
             float disAC = 0, disBC = 0, distanceAB = 0;
-            disAC = Math.Abs(posFirstBrick.x);
-            disBC = Math.Abs(posLastBrick.x);
+            disAC = Vector3.Distance(posFirstBrick, new Vector3(posXBlock, posFirstBrick.y, posFirstBrick.z));
+            disBC = Vector3.Distance(posLastBrick, new Vector3(posXBlock, posLastBrick.y, posLastBrick.z));
+            //disAC = Math.Abs(posFirstBrick.x);
+            //disBC = Math.Abs(posLastBrick.x);
+            Debug.Log("AC = " + disAC);
+            Debug.Log("BC = " + disBC);
             if ((posFirstBrick.x < 0 && posLastBrick.x < 0) || (posFirstBrick.x > 0 && posLastBrick.x > 0))
             {
                 distanceAB = disAC - disBC;
@@ -173,7 +183,7 @@ namespace Game
                 distanceAB = disAC + disBC;
             }
 
-            currentX += posLastBrick.x;
+            posXBlock += posLastBrick.x;
 
             return distanceAB;
         }
