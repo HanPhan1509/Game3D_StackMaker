@@ -1,4 +1,6 @@
 ﻿using NaughtyAttributes;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -21,11 +23,13 @@ namespace Game
         [Header("TRANSFORM")]
         [SerializeField] private Transform blockTransform;
 
-        private Vector3 minLimit;
-        private Vector3 maxLimit;
+        [Space(2f)]
+        [Header("PRIVOTE")]
+        [SerializeField] private Vector3 minLimit;
+        [SerializeField] private Vector3 maxLimit;
 
-        private float minQuantityPrivote;
-        private float maxQuantityPrivote;
+        [SerializeField] private float minQuantityPrivote;
+        [SerializeField] private float maxQuantityPrivote;
         private float widthPrivote;
 
         private List<Privote> lstPrivoteDespawn = new();
@@ -35,15 +39,15 @@ namespace Game
         public Vector3 LastBrick { get => lastBrick; set => lastBrick = value; }
         public List<Vector3> LstBrickBody { get => lstBrickBody; set => lstBrickBody = value; }
 
-        public void Init(Vector3 minLimit, Vector3 maxLimit, float minQuantityPrivote, float maxQuantityPrivote, float widthPrivote)
+        [Button("Get Values")]
+        public void GetValues()
         {
-            this.minLimit = minLimit;
-            this.maxLimit = maxLimit;
-            this.minQuantityPrivote = minQuantityPrivote;
-            this.maxQuantityPrivote = maxQuantityPrivote;
-            this.widthPrivote = widthPrivote;
+            widthPrivote = prefabPrivoteWall.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.y;
+            minQuantityPrivote = Math.Abs(maxLimit.x - minLimit.x);
+            maxQuantityPrivote = minQuantityPrivote * 3f;
         }
 
+        [Button("Clear Block")]
         public void ClearBlock()
         {
             lstPrivote.Clear();
@@ -89,31 +93,19 @@ namespace Game
                 Vector3 nextPos = firstBrick;
                 Vector3 currentPos = firstBrick;
                 Vector3 beforePos = firstBrick;
-                int count = 0;
-                int indexDuplicate = 0;
                 while (nextPos.z != maxLimit.z)
                 {
-                    bool isSpawn = true;
-                    nextPos = AutomationBrick(beforePos, currentPos);
-                    var check = CheckDuplicatePosition(nextPos, count);
-                    isSpawn = check.Item1;
-                    count = check.Item2;
-                    if (isSpawn)
-                    {
-                        lstPrivoteDespawn.Add(lstPrivote.Find(x => x.position == nextPos));
-                        lstBrickBody.Add(nextPos);
-                        beforePos = currentPos;
-                        currentPos = nextPos;
-                    }
-                    else
-                    {
-                        indexDuplicate = lstBrickBody.Count - 1;
-                    }
+                    nextPos = AutomationDirectionBrick(beforePos, currentPos);
+                    lstPrivoteDespawn.Add(lstPrivote.Find(x => x.position == nextPos));
+                    lstBrickBody.Add(nextPos);
+                    beforePos = currentPos;
+                    currentPos = nextPos;
                 }
-
-                if (indexDuplicate != 0)
-                    lstBrickBody.RemoveAt(indexDuplicate);
             } while (lstBrickBody.Count > maxQuantityPrivote || lstBrickBody.Count < minQuantityPrivote);
+
+            HashSet<Vector3> uniqueSet = new HashSet<Vector3>(lstBrickBody);
+            lstBrickBody.Clear();
+            lstBrickBody.AddRange(uniqueSet);
 
             SpawnLastBrick();
             DestroyLineBrick();
@@ -144,32 +136,13 @@ namespace Game
             return firstpos;
         }
 
-        private (bool, int) CheckDuplicatePosition(Vector3 pos, int count)
-        {
-            bool isDuplicated = false;
-            if (count == 0)
-            {
-                foreach (var p in lstBrickBody)
-                {
-                    if (p == pos)
-                    {
-                        isDuplicated = true;
-                        count++;
-                    }
-                }
-            }
-            if (isDuplicated && count > 0)
-                return (false, count);
-            return (true, count);
-        }
-
         public void SpawnBrick(Vector3 position)
         {
             GameObject privoteBrick = GameObject.Instantiate(prefabPrivoteBrick, position, Quaternion.identity);
             privoteBrick.transform.SetParent(blockTransform);
         }
 
-        public Vector3 AutomationBrick(Vector3 beforePos, Vector3 currentPos)
+        public Vector3 AutomationDirectionBrick(Vector3 beforePos, Vector3 currentPos)
         {
             List<Vector3> lstNextPos = new();
             Vector3 nextPos;

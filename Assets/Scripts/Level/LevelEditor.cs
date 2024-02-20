@@ -22,36 +22,16 @@ namespace Game
 
         [Space(2f)]
         [Header("PRIVOTE")]
-        [SerializeField] private GameObject prefabPrivoteWall;
-        [SerializeField] private GameObject prefabPrivoteBrick;
         [SerializeField] private Vector3 minLimit;
         [SerializeField] private Vector3 maxLimit;
-        [SerializeField] private float minQuantityPrivote;
-        [SerializeField] private float maxQuantityPrivote;
 
         private float widthBridge = 0.0f;
-        private float widthPrivote = 0.0f;
 
 
         [Button("Get value")]
         public void GetValue()
         {
             widthBridge = prefabBridge.GetComponent<MeshFilter>().sharedMesh.bounds.size.y;
-            //SimplePool.Preload(prefabPrivoteWall, 200);
-            widthPrivote = prefabPrivoteWall.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.y;
-            minQuantityPrivote = Math.Abs(maxLimit.x - minLimit.x);
-            maxQuantityPrivote = minQuantityPrivote * 3f;
-            block.Init(minLimit, maxLimit, minQuantityPrivote, maxQuantityPrivote, widthPrivote);
-        }
-
-        [Button("Clear Map")]
-        public void ClearMap()
-        {
-            block.ClearBlock();
-            //for (int i = bridge.childCount - 1; i >= 0; i--)
-            //{
-            //    DestroyImmediate(bridge.GetChild(i).gameObject);
-            //}
         }
 
         public void CreateBrigde(int quantitySpawn)
