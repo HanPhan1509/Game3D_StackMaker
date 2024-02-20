@@ -76,6 +76,7 @@ namespace Game
             Map map = GameObject.Instantiate(maps[levelMap].gameObject).GetComponent<Map>();
             map.transform.SetParent(mapSpace.transform);
             player.transform.position = new Vector3(map.posPlayer.x, 3.055f, map.posPlayer.z);
+            player.Reset();
         }    
 
         public void ButtonReplay()
@@ -88,6 +89,7 @@ namespace Game
             DestroyImmediate(gameSpace.GetChild(0).gameObject);
             view.UI_GameOver.gameObject.SetActive(false);
             levelMap++;
+            player.Reset();
             ButtonPlay();
         }    
     }

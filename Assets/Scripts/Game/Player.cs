@@ -24,6 +24,17 @@ public class Player : MonoBehaviour
         heightBrick = prefBrick.GetComponentInChildren<MeshFilter>().sharedMesh.bounds.size.z;
     }
 
+    public void Reset()
+    {
+        if(stackBricks.Count > 0)
+        {
+            for(int i = 0; i < stackBricks.Count - 1; i++)
+            {
+                RemoveBrick();
+            }    
+        }    
+    }    
+
     private void FixedUpdate()
     {
         CheckPrivote();
