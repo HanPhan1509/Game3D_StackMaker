@@ -23,28 +23,34 @@ namespace Game
         [Header("PRIVOTE")]
         [SerializeField] private Vector3 minLimit;
         [SerializeField] private Vector3 maxLimit;
+        [SerializeField] private int numberMap;
 
         private float widthBridge = 0.0f;
 
         [Button("Automation Create Map")]
         public void AutomationCreateMap()
         {
-            //for (int i = map.transform.childCount - 1; i >= 0; i--)
-            //{
-            //    DestroyImmediate(map.transform.GetChild(i).gameObject);
-            //}
+            ClearMap();
             GetValue();
-            LoadBlock();
-            GetBlocksInLevel();
-            CreateMap();
+            string folderPath = "Assets/Resources";
+            string[] prefabPaths = AssetDatabase.FindAssets("Map_", new[] { folderPath });
+            for (int i = prefabPaths.Length; i < prefabPaths.Length + numberMap; i++)
+            {
+                LoadBlock();
+                GetBlocksInLevel();
+                CreateMap();
+                //SaveMap(i + 1);
+                //ClearMap();
+            }
         }
 
-        //[Button("Clear Map")]
+        [Button("Clear Map")]
         public void ClearMap()
         {
             GameObject findMap = GameObject.Find("Map");
-            DestroyImmediate(findMap);
-        }    
+            if (findMap != null)
+                DestroyImmediate(findMap);
+        }
 
 
         //[Button("Get value")]
@@ -189,7 +195,8 @@ namespace Game
             string folderPath = "Assets/Resources";
             string[] prefabPaths = AssetDatabase.FindAssets("Map_", new[] { folderPath });
 
-            GameObject selectedObject = Selection.activeGameObject;
+            //GameObject selectedObject = Selection.activeGameObject;
+            GameObject selectedObject = GameObject.Find("Map");
 
             if (numberSave > -1) numberMap = numberSave;
             else numberMap = prefabPaths.Length + 1;
