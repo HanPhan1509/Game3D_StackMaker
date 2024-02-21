@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 281282824}
   - component: {fileID: 281282823}
   m_Layer: 0
-  m_Name: MapEditor
+  m_Name: LevelEditor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,22 +156,23 @@ MonoBehaviour:
   prefabFinish: {fileID: 2880636285420509873, guid: 419df1b1cb7863f4187eb1e76f2634c5, type: 3}
   minLimit: {x: -5, y: 0, z: -5}
   maxLimit: {x: 5, y: 0, z: 5}
+  numberMap: 5
   blocks:
   - {fileID: 620310286, guid: 1c382f255ad03904797797fb3589c3a0, type: 3}
   - {fileID: 620310286, guid: 58b7478d42b57314fa01488c9a59d2f5, type: 3}
-  - {fileID: 620310286, guid: 6e5b3144eb6deba438deeb049bc0a264, type: 3}
-  - {fileID: 620310286, guid: e543cbb7131e6594f925b4c92911cb71, type: 3}
-  - {fileID: 620310286, guid: aa2ed5eeb4d348b488db2742063a33ab, type: 3}
-  - {fileID: 620310286, guid: b00f258e4c1d4fc4997dc06ffb587567, type: 3}
-  - {fileID: 620310286, guid: 59af95c24df681341bae52d5e70e4af6, type: 3}
-  - {fileID: 620310286, guid: 6b710acf664dd60448be7c44c1db102e, type: 3}
-  - {fileID: 620310286, guid: af891bf89080b9e43a97892da9ace98e, type: 3}
-  - {fileID: 620310286, guid: 2054a9619ffc7a04a84a81f4534b2b01, type: 3}
-  - {fileID: 620310286, guid: f2e3a050814f24a45aec544356280dda, type: 3}
   - {fileID: 620310286, guid: 71dea428c7b6fe34b89d285ab8f505fe, type: 3}
   - {fileID: 620310286, guid: 90f71601c990aad4ba18d027dbd23bac, type: 3}
+  - {fileID: 620310286, guid: aa2ed5eeb4d348b488db2742063a33ab, type: 3}
   - {fileID: 620310286, guid: 2d8ab8c525fdc5b45b0a361dfb3ff0e1, type: 3}
+  - {fileID: 620310286, guid: 2054a9619ffc7a04a84a81f4534b2b01, type: 3}
+  - {fileID: 620310286, guid: af891bf89080b9e43a97892da9ace98e, type: 3}
+  - {fileID: 620310286, guid: 8d2dd45725a27134d9bb507953835ee0, type: 3}
+  - {fileID: 620310286, guid: c309dd067ab62e947a78a23306aa62ad, type: 3}
+  - {fileID: 620310286, guid: 4a4d51c9cb85ccc4eac0cc5a2d1038bc, type: 3}
+  - {fileID: 620310286, guid: b9d3dc68bb31c8c41bd6c2dce622186e, type: 3}
   - {fileID: 620310286, guid: 9e9e558b0071d82488ed51418dbc84c4, type: 3}
+  - {fileID: 620310286, guid: c40f558786af9e840b36aabedc2c6ade, type: 3}
+  - {fileID: 620310286, guid: 8087e81fb61f8044790d1d63dea8a7a3, type: 3}
   quantityBlock: 4
 --- !u!4 &281282824
 Transform:
@@ -310,8 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778375c4cd172044c8672df84049e0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstBrick: {x: -3, y: 0, z: -5}
-  lastBrick: {x: -3, y: 0, z: 5}
+  firstBrick: {x: 0, y: 0, z: -5}
+  lastBrick: {x: 2, y: 0, z: 5}
   lstBrickBody: []
   prefabPrivoteWall: {fileID: 4498709886862295864, guid: dd5d0cc42aad4f34ea3bf46eb092b2ff, type: 3}
   prefabPrivoteBrick: {fileID: 502601859737027903, guid: d39478978adc3f1449af7b4f7326c6bd, type: 3}
@@ -320,7 +321,7 @@ MonoBehaviour:
   maxLimit: {x: 5, y: 0, z: 5}
   minQuantityPrivote: 10
   maxQuantityPrivote: 30
-  numberCreate: 15
+  numberCreate: 3
 --- !u!4 &620310287
 Transform:
   m_ObjectHideFlags: 0

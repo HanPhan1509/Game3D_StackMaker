@@ -15,7 +15,7 @@ namespace Game
         [SerializeField] private View view;
         [SerializeField] private Player player;
         [SerializeField] private Transform gameSpace;
-        private List<Map> maps = new();
+        [SerializeField] private List<Map> maps = new();
         private bool isGameover = false;
         private int levelMap = 0;
 
@@ -74,7 +74,6 @@ namespace Game
             player.gameObject.SetActive(true);
             GameObject mapSpace = new GameObject("Map");
             mapSpace.transform.SetParent(gameSpace);
-            Debug.Log(maps[levelMap].gameObject.name);
             Map map = GameObject.Instantiate(maps[levelMap].gameObject).GetComponent<Map>();
             map.transform.SetParent(mapSpace.transform);
             player.transform.position = new Vector3(map.posPlayer.x, 3.055f, map.posPlayer.z);

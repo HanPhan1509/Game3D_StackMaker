@@ -39,8 +39,8 @@ namespace Game
                 LoadBlock();
                 GetBlocksInLevel();
                 CreateMap();
-                //SaveMap(i + 1);
-                //ClearMap();
+                SaveMap(i + 1);
+                ClearMap();
             }
         }
 
@@ -188,7 +188,7 @@ namespace Game
             bridge.transform.position = new Vector3(position.x, 2.5f, position.z);
         }
 
-        [Button("Save Map")]
+        //[Button("Save Map")]
         public static void SaveMap(int numberSave = -1)
         {
             int numberMap = 0;
