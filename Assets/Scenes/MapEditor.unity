@@ -154,7 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabBridge: {fileID: 1070504870967473788, guid: 65585d724fa396c4c9c29669dcc156f9, type: 3}
   prefabFinish: {fileID: 2880636285420509873, guid: 419df1b1cb7863f4187eb1e76f2634c5, type: 3}
-  block: {fileID: 620310286}
   minLimit: {x: -5, y: 0, z: -5}
   maxLimit: {x: 5, y: 0, z: 5}
   blocks:

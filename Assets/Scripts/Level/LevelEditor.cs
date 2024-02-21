@@ -18,7 +18,6 @@ namespace Game
     {
         [SerializeField] private GameObject prefabBridge;
         [SerializeField] private GameObject prefabFinish;
-        [SerializeField] private Block block;
 
         [Space(2f)]
         [Header("PRIVOTE")]
@@ -30,11 +29,23 @@ namespace Game
         [Button("Automation Create Map")]
         public void AutomationCreateMap()
         {
+            //for (int i = map.transform.childCount - 1; i >= 0; i--)
+            //{
+            //    DestroyImmediate(map.transform.GetChild(i).gameObject);
+            //}
             GetValue();
             LoadBlock();
             GetBlocksInLevel();
             CreateMap();
+        }
+
+        //[Button("Clear Map")]
+        public void ClearMap()
+        {
+            GameObject findMap = GameObject.Find("Map");
+            DestroyImmediate(findMap);
         }    
+
 
         //[Button("Get value")]
         public void GetValue()
@@ -169,6 +180,22 @@ namespace Game
             }
             bridge.transform.SetParent(parent.transform);
             bridge.transform.position = new Vector3(position.x, 2.5f, position.z);
+        }
+
+        [Button("Save Map")]
+        public static void SaveMap(int numberSave = -1)
+        {
+            int numberMap = 0;
+            string folderPath = "Assets/Resources";
+            string[] prefabPaths = AssetDatabase.FindAssets("Map_", new[] { folderPath });
+
+            GameObject selectedObject = Selection.activeGameObject;
+
+            if (numberSave > -1) numberMap = numberSave;
+            else numberMap = prefabPaths.Length + 1;
+
+            string prefabPath = "Assets/Resources/Map_" + numberMap.ToString() + ".prefab";
+            PrefabUtility.SaveAsPrefabAsset(selectedObject, prefabPath);
         }
     }
 }
